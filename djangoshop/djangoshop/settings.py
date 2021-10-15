@@ -79,10 +79,19 @@ WSGI_APPLICATION = 'djangoshop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# Подцепил базу mysql на собственном тестовом хостинге
+# https://bullet.beget.com/phpMyAdmin/index.php - админка
+# 'USER': y91616lw_django
+# 'PASSWORD': Secur1ty#
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'y91616lw_django',
+        'USER': 'y91616lw_django',
+        'PASSWORD': 'Secur1ty#',
+        'HOST': 'y91616lw.beget.tech',
+        'PORT': '3306',
     }
 }
 
@@ -109,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
 
@@ -132,3 +141,6 @@ STATICFILES_DIRS = (
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

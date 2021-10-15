@@ -1,11 +1,9 @@
 <div class="header clearfix">
     <a href="/" class="logo"></a>
-{#    попытался сделать так чтобы в меню подчеркивалась активная страница, #}
-{#    но результат не очень радует глаз, не понял почем оно не выглядит точно так же как и до изменения хотя и работает #}
     {% with request.resolver_match.url_name as url_name %}
     <ul class="menu">
         <li class="{% if url_name == 'main' %}active{% endif %}"><a href="{% url 'main' %}">домой</a></li>
-        <li class="{% if url_name == 'products' %}active{% endif %}"><a href="{% url 'products' %}">продукты</a></li>
+        <li class="{% if url_name == 'products:main' %}active{% endif %}"><a href="{% url 'products:main' %}">продукты</a></li>
         <li class="{% if url_name == 'contacts' %}active{% endif %}"><a href="{% url 'contacts' %}">контакты</a></li>
     </ul>
     {% endwith %}
