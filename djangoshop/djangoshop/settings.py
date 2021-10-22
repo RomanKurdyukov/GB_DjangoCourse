@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     'authapp',
     'mainapp',
+    'basketapp',
 
 ]
 AUTH_USER_MODEL = 'authapp.ShopUser'
@@ -87,15 +88,21 @@ WSGI_APPLICATION = 'djangoshop.wsgi.application'
 # 'PASSWORD': Secur1ty#
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'y91616lw_django',
+    #     'USER': 'y91616lw_django',
+    #     'PASSWORD': 'Secur1ty#',
+    #     'HOST': 'y91616lw.beget.tech',
+    #     'PORT': '3306',
+    # }
+
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'y91616lw_django',
-        'USER': 'y91616lw_django',
-        'PASSWORD': 'Secur1ty#',
-        'HOST': 'y91616lw.beget.tech',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'djangoshop_DB',
     }
 }
+
 
 
 # Password validation

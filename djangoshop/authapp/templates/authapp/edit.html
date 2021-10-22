@@ -1,9 +1,12 @@
-
 {% extends 'authapp/base.html' %}
 
 {% load static %}
 {% block content %}
-    <img src="{{ user.avatar.path }}" class="w-25">
+    {% if user.avatar %}
+        <img src="{{ user.avatar.path }}" class="w-25" alt="avatar">
+    {% else %}
+        <img src="/media/user-default-avatar.png" alt="">
+    {% endif %}
     <form class="form-horizontal" action="{% url 'auth:edit' %}" method="post" enctype=multipart/form-data>
         {% csrf_token %}
         {{ edit_form.as_p }}
