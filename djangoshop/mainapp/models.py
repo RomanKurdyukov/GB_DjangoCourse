@@ -25,6 +25,8 @@ class ProductCategory(models.Model):
         auto_now=True
     )
 
+    is_active = models.BooleanField(verbose_name='активна', default=True)
+
     def __str__(self):
         return f'{self.name}'
 
@@ -135,6 +137,8 @@ class Product(models.Model):
         default=0,
         verbose_name='количество'
     )
+
+    is_active = models.BooleanField(verbose_name='активна', default=True)
 
     def __str__(self):
         return f'{self.name} {self.vendor_code} ({self.category.name})'

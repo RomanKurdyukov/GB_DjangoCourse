@@ -25,6 +25,8 @@ class Basket(models.Model):
 
     created_at = models.DateTimeField(verbose_name='время', auto_now_add=True)
 
+    is_active = models.BooleanField(verbose_name='активна', default=True)
+
     @property
     def product_cost(self):
         return self.product.price * self.quantity

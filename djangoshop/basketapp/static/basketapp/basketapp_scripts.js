@@ -1,6 +1,7 @@
 window.onload = function () {
+    'use strict';
     $('.basket_list').on('click', 'input[type="number"]', function () {
-        var t_href = event.target;
+        let t_href = event.target;
 
         $.ajax({
             url: "/basket/edit/" + t_href.name + "/" + t_href.value + "/",

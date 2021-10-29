@@ -91,13 +91,12 @@ html, body {
 }
 
 .basketcount {
-	display: block;
-	color: #e53935;
-	width: 23px;
-	height: 23px;
-	position: absolute;
-	top: 86px;
-	left: 1210px;
+    display: block;
+    color: #e53935;
+    height: 23px;
+    top: 63px;
+    left: 1210px;
+    margin-left: 15px;
 }
 
 .clearfix:after {
