@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 from django import forms
 from authapp.models import ShopUser
+from mainapp.models import ProductCategory
 
 
 class ShopUserLoginForm(AuthenticationForm):
@@ -52,3 +53,23 @@ class ShopUserEditForm(UserChangeForm):
         if data < 18:
             raise forms.ValidationError("Вам нет 18 лет!")
         return data
+
+
+class ProductCategoryAddForm(forms.ModelForm):
+    class Meta:
+        model = ProductCategory
+        fields = ('name', 'description')
+
+
+class ProductCategoryEditForm(forms.ModelForm):
+    class Meta:
+        model = ProductCategory
+        fields = ('name', 'description')
+
+    def __init__(self, *args, **kwargs):
+        super(ProductCategoryEditForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+            field.help_text = ''
+            if field_name == 'is_active':
+                field.widget.attrs['class'] = ''
