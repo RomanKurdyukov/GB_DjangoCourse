@@ -107,7 +107,8 @@
             <div class="related-products clearfix">
                 {% for product in same_products %}
                     <div class="block">
-                        <a href="{% url 'products:detail' same_product.pk %}"><img src="{{ same_product.image.image.path }}" alt="{{ same_product.name }}">
+                        <a href="{% url 'products:detail' product.pk %}"><img
+                                src="{{ product.image.image.path }}" alt="{{ product.name }}">
                             <div class="text">
                                 <img src="{% static 'djangoshop/img/icon-hover.png' %}" alt="img">
                                 <h4>{{ product.name }}</h4>

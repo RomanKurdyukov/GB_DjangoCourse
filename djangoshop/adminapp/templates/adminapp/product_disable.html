@@ -1,0 +1,17 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="category_delete">
+    <h4>Cнять товар:  {{ product.name }} (Арт. {{ product.vendor_code }}) с продажи ?</h4>
+    <form action="{% url 'adminapp:product_disable' product.category_id product.id %}" method="post">
+      {% csrf_token %}
+      <input class="btn btn-danger" type="submit" value="Снять" style="margin-top: 20px; width: 100px">
+    </form>
+    <button class="btn btn-success" style="margin-top: 25px; width: 100px">
+      <a href="{% url 'adminapp:products' product.category_id %}" style="color: #eeeeee">
+        Отмена
+      </a>
+    </button>
+  </div>
+{% endblock %}

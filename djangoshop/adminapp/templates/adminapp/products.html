@@ -1,0 +1,125 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+{% load adminapp_extras %}
+
+{% block content %}
+    <main>
+    {% current_cat request as cat_id %}
+    {% current_name request as cat_name %}
+    <div class="container-fluid">
+        <h4 class="mt-4">Категория - "{{ cat_name }}" , товаров: {% prod_counter cat_id %}</h4>
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table mr-1"></i>
+                Товары
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Артикул</th>
+                            <th>Наименование</th>
+                            <th>Склад</th>
+                            <th>Доступен для продажи</th>
+                            <th>Снять с продажи</th>
+                            <th>Удалить</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>Артикул</th>
+                            <th>Наименование</th>
+                            <th>Склад</th>
+                            <th>Доступен для продажи</th>
+                            <th>Снять с продажи</th>
+                            <th>Удалить</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        {% for product in products %}
+                            {% if cat_id == product.category_id %}
+                                <tr {% if not product.is_active %} style="opacity: 0.5;" {% endif %}>
+                                    <td>{{ product.vendor_code }}</td>
+                                    <td><a href="{% url 'adminapp:product_update' cat_id product.id %}"
+                                           style="color: dodgerblue">{{ product.name }}</a></td>
+                                    <td>{{ product.quantity }}</td>
+                                    <td class="text-center">
+                                        {% if product.is_active %}
+                                            <i class="fa fa-check-circle" style="color: #43a047"></i>
+                                        {% else %}
+                                            <i class="fa fa-times-circle" style="color: #e53935"></i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a {% if not product.is_active %} class="invisible" {% endif %}href="
+                                                {% url 'adminapp:product_disable' cat_id product.id %}">
+                                            <i class="fa fa-times-circle"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'adminapp:product_delete' cat_id product.id %}">
+                                            <button type="button" class="btn btn-labeled btn-danger ">
+                                                <span class="btn-label">
+                                                    <i class="fa fa-trash">
+                                                    </i>
+                                                </span>
+                                                  Удалить
+                                            </button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'adminapp:vc_create' cat_id %}">
+                    <button class="btn btn-success">Добавить товар</button>
+                </a>
+            </div>
+
+            <nav aria-label="...">
+            {% if is_paginated %}
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1"
+                               aria-disabled="true">Пред.</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1"
+                               aria-disabled="true">Пред.</a>
+                        </li>
+                    {% endif %}
+                    {% for p in paginator.page_range %}
+                        {% if page_obj.number == p %}
+                            <li class="page-item active" aria-current="page">
+                                <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+                            </li>
+                        {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}" tabindex="-1"
+                               aria-disabled="true">След.</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1"
+                               aria-disabled="true">След.</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+            </nav>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

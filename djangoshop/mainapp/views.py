@@ -19,23 +19,23 @@ def get_hot_prod():
 
 
 def get_same_prod(hot_prod):
-    same_products = Product.objects.filter(category=hot_prod.category).exclude(pk=hot_prod.pk)[:2]
+    same_products = Product.objects.filter(category=hot_prod.category).exclude(pk=hot_prod.pk)[:4]
     return same_products
 
 
 def products(request, pk=None):
     title = 'Каталог'
     links_menu = ProductCategory.objects.all()
-    products = Product.objects.all().order_by('price')
+    products = Product.objects.all().order_by('price')[:4]
     basket = get_basket(request.user)
 
     if pk is not None:
         if pk == 0:
-            products = Product.objects.all().order_by('price')
+            products = Product.objects.all().order_by('price')[:4]
             category = {'name': 'все'}
         else:
             category = get_object_or_404(ProductCategory, pk=pk)
-            products = Product.objects.filter(category__pk=pk).order_by('price')
+            products = Product.objects.filter(category__pk=pk).order_by('price')[:4]
 
         context = {
             'title': title,

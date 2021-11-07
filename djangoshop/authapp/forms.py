@@ -1,7 +1,12 @@
+
+
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 from django import forms
+from django.shortcuts import get_object_or_404
+from django.template import RequestContext
+
 from authapp.models import ShopUser
-from mainapp.models import ProductCategory
+from mainapp.models import ProductCategory, Product, VendorCode
 
 
 class ShopUserLoginForm(AuthenticationForm):
@@ -68,8 +73,30 @@ class ProductCategoryEditForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ProductCategoryEditForm, self).__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
-            field.help_text = ''
-            if field_name == 'is_active':
-                field.widget.attrs['class'] = ''
+
+
+
+class ProductAddForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = '__all__'
+        # exclude = ('category', 'vendor_code',)
+
+
+class VcAddForm(forms.ModelForm):
+    class Meta:
+        model = VendorCode
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(VcAddForm, self).__init__(*args, **kwargs)
+
+
+class ProductEditForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = '__all__'
+        exclude = ('vendor_code',)
+
+    def __init__(self, *args, **kwargs):
+        super(ProductEditForm, self).__init__(*args, **kwargs)

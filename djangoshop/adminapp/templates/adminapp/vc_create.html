@@ -1,0 +1,11 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+
+{% block content %}
+    <form class="form-horizontal" method="post", enctype="multipart/form-data">
+        {% csrf_token %}
+        <h4>Добавьте артикул для вносимого товара...</h4>
+        <div style="display: grid; width: 500px; margin-bottom: 100px">{{ form }}</div>
+      <button type="submit" class="btn btn-primary">Далее...</button>
+    </form>
+{% endblock %}

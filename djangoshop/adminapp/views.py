@@ -1,11 +1,11 @@
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpRequest
 from django.shortcuts import render, get_object_or_404, reverse
 from django.urls import reverse_lazy
 
-from adminapp.forms import ShopUserAdminEditForm, ProductCategoryAdminEditForm
-from authapp.forms import ShopUserRegisterForm, ProductCategoryAddForm
+from adminapp.forms import ShopUserAdminEditForm, ProductCategoryAdminEditForm, VcAdminAddForm
+from authapp.forms import ShopUserRegisterForm, ProductCategoryAddForm, ProductAddForm, ProductEditForm
 from authapp.models import ShopUser
-from mainapp.models import ProductCategory, Product
+from mainapp.models import ProductCategory, Product, VendorCode
 from django.contrib.auth.decorators import user_passes_test
 from django.views.generic import ListView, DeleteView, DetailView, CreateView, UpdateView
 
@@ -83,32 +83,15 @@ def user_delete(request, pk):
     return render(request, 'adminapp/user_delete.html', context)
 
 
-# def categories(request):
-#     title = 'админка/категории'
-#
-#     categories_list = ProductCategory.objects.all()
-#
-#     content = {
-#         'title': title,
-#         'objects': categories_list
-#     }
-#
-#     return render(request, 'adminapp/categories.html', content)
-
-
 class CategoryMain(ListView):
     model = ProductCategory
 
     template_name = 'adminapp/categories.html'
 
-    queryset = ProductCategory.objects.all()
-
     context_object_name = 'categories'
 
     def get_context_data(self, **kwargs):
-
-        context = super(CategoryMain, self). get_context_data(**kwargs)
-        context['counter'] = Product.objects.filter(category__pk=self.kwargs.get('id')).count()
+        context = super().get_context_data(**kwargs)
         return context
 
 
@@ -139,32 +122,101 @@ class CategoryCreate(CreateView):
     success_url = reverse_lazy('adminapp:categories')
 
 
-def products(request, pk):
-    title = 'админка/продукт'
+class ProductByCatView(ListView):
 
-    category = get_object_or_404(ProductCategory, pk=pk)
-    products_list = Product.objects.filter(category__pk=pk).order_by('name')
+    model = Product
 
-    content = {
-        'title': title,
-        'category': category,
-        'objects': products_list,
-    }
+    template_name = 'adminapp/products.html'
 
-    return render(request, 'adminapp/products.html', content)
+    context_object_name = 'products'
 
 
-def product_create(request, pk):
-    pass
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Товары в категории..'
+        return context
 
 
-def product_read(request, pk):
-    pass
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductAddForm
+    template_name = 'adminapp/product_update.html'
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['category'] = self.kwargs['pk']
+        initial['vendor_code'] = VendorCode.objects.filter(code=self.kwargs['vc']).values_list('id', flat=True)[0]
+        return initial
+
+    def get_success_url(self):
+        if 'pk' in self.kwargs:
+            pk = self.kwargs['pk']
+        else:
+            pk = 1
+        return reverse('adminapp:products', kwargs={'pk': pk})
 
 
-def product_update(request, pk):
-    pass
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductEditForm
+    template_name = 'adminapp/product_update.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Изменение товара...'
+        return context
+
+    def get_success_url(self):
+        if 'cat' in self.kwargs:
+            pk = self.kwargs['cat']
+        else:
+            pk = 8
+        return reverse('adminapp:products', kwargs={'pk': pk})
 
 
-def product_delete(request, pk):
-    pass
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = 'adminapp/product_delete.html'
+
+    def get_success_url(self):
+        if 'cat' in self.kwargs:
+            pk = self.kwargs['cat']
+        else:
+            pk = 8
+        return reverse('adminapp:products', kwargs={'pk': pk})
+
+    def delete(self, request, *args, **kwargs):
+        Product.objects.filter(id=self.kwargs['pk']).delete()
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class ProductDisableView(DeleteView):
+    model = Product
+    template_name = 'adminapp/product_disable.html'
+
+    def get_success_url(self):
+        if 'cat' in self.kwargs:
+            pk = self.kwargs['cat']
+        else:
+            pk = 8
+        return reverse('adminapp:products', kwargs={'pk': pk})
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.is_active = False
+        self.object.save()
+
+        return HttpResponseRedirect(self.get_success_url())
+
+class VendorCodeCreateView(CreateView):
+    model = VendorCode
+    form_class = VcAdminAddForm
+    template_name = 'adminapp/vc_create.html'
+
+    def get_success_url(self):
+        if 'pk' in self.kwargs:
+            pk = self.kwargs['pk']
+        else:
+            pk = 8
+        vc = self.object.code
+        return reverse('adminapp:product_create', kwargs={'pk': pk, 'vc': vc})
