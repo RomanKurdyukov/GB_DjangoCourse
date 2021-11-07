@@ -125,7 +125,7 @@ class CategoryCreate(CreateView):
 class ProductByCatView(ListView):
 
     model = Product
-
+    paginate_by = 3
     template_name = 'adminapp/products.html'
 
     context_object_name = 'products'
