@@ -1,0 +1,22 @@
+[
+  {
+    "vendor_code": "170542",
+    "image": "products_images/product-2.jpg",
+    "short_description": "Кресло"
+  },
+  {
+    "vendor_code": "1579996",
+    "image": "products_images/product-1.jpg",
+    "short_description": "Лампа сфера"
+  },
+  {
+    "vendor_code": "7779631",
+    "image": "products_images/product-61.jpg",
+    "short_description": "Ваза"
+  },
+  {
+    "vendor_code": "45785412",
+    "image": "products_images/400.jpg",
+    "short_description": "Барный стул"
+  }
+]
