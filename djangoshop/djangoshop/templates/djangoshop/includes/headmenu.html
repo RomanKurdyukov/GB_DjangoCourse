@@ -3,30 +3,55 @@
     {% with request.resolver_match.url_name as url_name %}
         <ul class="menu">
             <li class="{% if url_name == 'main' %}active{% endif %}"><a href="{% url 'main' %}">домой</a></li>
-            <li class="{% if url_name == 'products:main' %}active{% endif %}"><a href="{% url 'products:main' %}">продукты</a>
+            <li class="{% if url_name == 'products' %}active{% endif %}"><a href="{% url 'products:main' %}">продукты</a>
             <li class="{% if url_name == 'contacts' %}active{% endif %}"><a href="{% url 'contacts' %}">контакты</a>
-            {% if user.is_authenticated %}
-                <li>
-                    <a href="{% url 'auth:edit' %}">
-                        {{ user.first_name|default:'Пользователь' }}
-                    </a>
+                {% if user.is_authenticated %}
+                    <li class="dropdown-toggle" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <a href="">{{ user.first_name|default:'Пользователь' }}</a>
+                    </li>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'auth:edit' %}">
+                                аккаунт
+                            </a>
+                        </li>
+                        {% if user.is_superuser %}
+                            <li>
+                                <a class="dropdown-item" href="{% url 'admin_staff:users' %}">Админка</a>
+                            </li>
+                        {% endif %}
+                        {% if basket %}
+                            <li>
+                                <a class="dropdown-item" href="{% url 'basket:view' %}">Корзина </a>
+                            </li>
+                        {% endif %}
+                        {% if user.is_authenticated %}
+                            <li>
+                                <a class="dropdown-item" href="{% url 'auth:logout' %}">выйти</a>
+                            </li>
+                        {% endif %}
+                        </li>
+                    </ul>
+                    {% if basket %}
+                        <li>
+                        <span style=margin-left:15px>
+                            {{ basket.0.total_cost|floatformat:0 }} руб. ({{ basket.0.total_qty }} шт.)
+                        </span>
+                        </li>
+                    {% endif %}
 
-                    <a href="{% url 'basket:view' %}">Корзина </a>
-                    <span>
-                        ({{ basket.0.total_qty }} шт.
-                        на {{ basket.0.total_cost|floatformat:0 }} руб.)
-                    </span>
+                {% endif %}
+            {% if not user.is_authenticated %}
+                <li>
+                    <a href="{% url 'auth:login' %}">войти</a>
                 </li>
             {% endif %}
-            <li>
-                {% if user.is_authenticated %}
-                    <a href="{% url 'auth:logout' %}">выйти</a>
-                {% else %}
-                    <a href="{% url 'auth:login' %}">войти</a>
-                {% endif %}
-
-            </li>
         </ul>
     {% endwith %}
     <a href="#" class="search"></a>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-
+beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-
+ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+crossorigin="anonymous"></script>
