@@ -2,9 +2,20 @@ from django.shortcuts import render
 
 
 def index(request):
-    return render(request, 'djangoshop/index.html')
+    title = 'Магазин'
+
+    context = {
+        'title': title,
+    }
+    return render(request, 'djangoshop/index.html', context)
 
 
 def contacts(request):
-    return render(request, 'djangoshop/contact.html')
+    title = 'Контакты'
+
+    context = {
+        'title': title,
+    }
+    return render(request, 'djangoshop/contact.html', context)
+
 
