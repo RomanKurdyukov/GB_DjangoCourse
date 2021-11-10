@@ -25,7 +25,8 @@
         </ul>
     {% endwith %}
     <a href="#" class="search"></a>
-    <a href="#" class="basket"></a>
-
-
+    {% if user.is_authenticated %}
+        <a href="{% url 'basket:view' %}" class="basket"></a>
+        <a href="{% url 'basket:view' %}" class="basketcount">{{ user.basket.count }}шт.</a>
+    {% endif %}
 </div>

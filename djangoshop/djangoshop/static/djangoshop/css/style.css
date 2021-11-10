@@ -90,6 +90,16 @@ html, body {
 	left: 1210px;
 }
 
+.basketcount {
+	display: block;
+	color: #e53935;
+	width: 23px;
+	height: 23px;
+	position: absolute;
+	top: 86px;
+	left: 1210px;
+}
+
 .clearfix:after {
 	content: "";
 	display: block;
