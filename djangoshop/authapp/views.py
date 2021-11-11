@@ -3,6 +3,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.contrib import auth
 from django.urls import reverse
 from django.conf import settings
+from django.contrib import messages
 
 from authapp.forms import *
 
@@ -50,6 +51,7 @@ def register(request):
             user = register_form.save()
             if send_verify_mail(user):
                 print('Запрос на подтверждение отправлен.')
+                messages.success(request, 'Письмо с подтверждением отправлено на почту!')
                 return HttpResponseRedirect(reverse('auth:login'))
             else:
                 print('Запрос на подтверждение не отправлен.')

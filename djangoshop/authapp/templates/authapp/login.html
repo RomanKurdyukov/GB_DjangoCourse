@@ -54,6 +54,19 @@
   <body class="text-center">
 
 <main class="form-signin">
+    {% if messages %}
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">Поздравляем!</h4>
+            <p>Вы успешно зарегестрировались</p>
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            <hr>
+            <p class="mb-0">Для подтверждения учетной записи перейдите по ссылке в письме!</p>
+        </div>
+    {% endif %}
   <form action="{% url 'auth:login' %}" method="post">
     <img class="mb-4" src="{% static 'authapp/logo.png' %}" alt="" width="100%" height="50">
     <h1 class="h3 mb-3 fw-normal">Пожалуйста авторизуйтесь...</h1>
@@ -64,19 +77,14 @@
             <input type="hidden" name="next" value="{{ next }}">
         {% endif %}
         {{ login_form.as_p }}
-{#    <div class="checkbox mb-3">#}
-{#      <label>#}
-{#        <input type="checkbox" value="remember-me"> Remember me#}
-{#      </label>#}
-{#    </div>#}
       <button class="w-100 btn btn-lg btn-primary" type="submit" style="margin-bottom: 15px; margin-top: 15px">
           Войти
       </button>
       <a href="{% url 'auth:register' %}" class="w-100 btn btn-lg btn-primary">
           Зарегестрироваться
       </a>
+    </div>
   </form>
-
 </main>
 
 
