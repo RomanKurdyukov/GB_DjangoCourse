@@ -6,7 +6,7 @@ from django import forms
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 
-from authapp.models import ShopUser
+from authapp.models import ShopUser, ShopUserProfile
 from mainapp.models import ProductCategory, Product, VendorCode
 
 
@@ -111,3 +111,14 @@ class ProductEditForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ProductEditForm, self).__init__(*args, **kwargs)
+
+
+class ShopUserProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = ShopUserProfile
+        fields = ('tagline', 'about_me', 'gender')
+
+    def __init__(self, *args, **kwargs):
+        super(ShopUserProfileEditForm, self).__init__(*args, **kwargs)
+        # for field_name, field in self.fields.items():
+        #     field.widget.attrs['class'] = 'form-control'
