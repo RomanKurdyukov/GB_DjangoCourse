@@ -53,7 +53,7 @@ class Order(models.Model):
         verbose_name_plural = 'заказы'
 
     def __str__(self):
-        return f'Заказ {self.user.name} №{self.id} от {self.created_at}'
+        return f'Заказ {self.user.username} №{self.id} от {self.created_at}'
 
     def get_total_quantity(self):
         items = self.orderitems.select_related()
@@ -76,7 +76,17 @@ class Order(models.Model):
         self.save()
 
 
+class OrderItemQuerySet(models.QuerySet):
+    def delete(self, *args, **kwargs):
+        for obj in self:
+            obj.product.quantity += obj.quantity
+            obj.product.save()
+        super(OrderItemQuerySet, self).delete()
+
+
 class OrderItem(models.Model):
+    objects = OrderItemQuerySet.as_manager()
+
     order = models.ForeignKey(
         Order,
         related_name='orderitems',
@@ -92,5 +102,26 @@ class OrderItem(models.Model):
         default=0,
     )
 
+    @staticmethod
+    def get_item(pk):
+        return OrderItem.objects.filter(pk=pk).first()
+
     def get_product_cost(self):
         return self.product.price * self.quantity
+
+    def delete(self):
+        self.product.quantity += self.quantity
+        self.product.save()
+        super(OrderItem, self).delete()
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            self.product.quantity -= self.quantity - self.__class__.get_item(self.pk).quantity
+        else:
+            self.product.quantity -= self.quantity
+        self.product.save()
+        super(self.__class__, self).save(*args, **kwargs)
+
+
+
+
