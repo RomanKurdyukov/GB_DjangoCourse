@@ -552,7 +552,7 @@ html, body {
 
 .footer {
 	height: 384px;
-	width: 1169px;
+	width: 1350px;
 	background-color: #f7f7f7;
 	padding-left: 99px;
 	padding-right: 98px;
@@ -905,13 +905,13 @@ td:first-child {
 	height: 651px; 
 }
 .details-slider {
-	width: 570px;
+	width: 470px;
 	float: left;
 	margin-right: 30px;
 }
 .slider-product {
-	width: 570px;
-	height: 570px;
+	width: 470px;
+	height: 470px;
 }
 .slider-control {
 	width: 420px;
@@ -940,7 +940,7 @@ td:first-child {
 }
 
 .description {
-	width: 535px;
+	width: 450px;
 	float: right;
 	padding-left: 35px
 }
