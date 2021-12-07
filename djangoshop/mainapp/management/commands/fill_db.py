@@ -60,6 +60,6 @@ class Command(BaseCommand):
             new_product.save()
 
         ShopUser.objects.all().delete()
-        super_user = ShopUser.objects.create_superuser('admin', 'admin@admin.local', '1Install2', age=37)
+        super_user = ShopUser.objects.create_superuser('admin', 'admin@admin.local', 'admin', age=37)
         if super_user:
             print('Admin account successfully created!')

@@ -1,17 +1,94 @@
 {% extends 'authapp/base.html' %}
 {% load static %}
 {% block content %}
-    <form class="form-horizontal" action="{% url 'auth:login' %}" method="post">
+{#    <form class="form-horizontal" action="{% url 'auth:login' %}" method="post">#}
+{#        {% csrf_token %}#}
+{#        {% if next %}#}
+{#            <input type="hidden" name="next" value="{{ next }}">#}
+{#        {% endif %}#}
+{#        {{ login_form.as_p }}#}
+{#        <button type="submit" class="btn btn-primary">Войти</button>#}
+{#    </form>#}
+{#    <button class="btn btn-round form-control">#}
+{#        <a href="{% url 'auth:register' %}" class="btn btn-primary">#}
+{#            зарегестрироваться#}
+{#        </a>#}
+{#    </button>#}
+    <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Авторизация</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
+
+
+
+    <!-- Bootstrap core CSS -->
+<link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+
+    <!-- Custom styles for this template -->
+    <link href="signin.css" rel="stylesheet">
+  </head>
+  <body class="text-center">
+
+<main class="form-signin">
+    {% if messages %}
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">Поздравляем!</h4>
+            <p>Вы успешно зарегестрировались</p>
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            <hr>
+            <p class="mb-0">Для подтверждения учетной записи перейдите по ссылке в письме!</p>
+        </div>
+    {% endif %}
+  <form action="{% url 'auth:login' %}" method="post">
+    <img class="mb-4" src="{% static 'authapp/logo.png' %}" alt="" width="100%" height="50">
+    <h1 class="h3 mb-3 fw-normal">Пожалуйста авторизуйтесь...</h1>
+
+    <div class="form-floating">
         {% csrf_token %}
         {% if next %}
             <input type="hidden" name="next" value="{{ next }}">
         {% endif %}
         {{ login_form.as_p }}
-        <button type="submit" class="btn btn-primary">Войти</button>
-    </form>
-    <button class="btn btn-round form-control">
-        <a href="{% url 'auth:register' %}" class="btn btn-primary">
-            зарегестрироваться
-        </a>
-    </button>
+      <button class="w-100 btn btn-lg btn-primary" type="submit" style="margin-bottom: 15px; margin-top: 15px">
+          Войти
+      </button>
+      <a href="{% url 'auth:register' %}" class="w-100 btn btn-lg btn-primary">
+          Зарегестрироваться
+      </a>
+    </div>
+  </form>
+</main>
+
+
+
+  </body>
+</html>
 {% endblock %}

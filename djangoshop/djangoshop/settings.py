@@ -69,6 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'basketapp.context_processors.basket',
             ],
             'libraries': {
                 'djangoshop_extras': 'djangoshop.templatetags.djangoshop_extras',
@@ -156,3 +157,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 LOGIN_URL = '/auth/login/'
+
+DOMAIN_NAME = 'http://localhost:8001'
+
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_HOST_USER = '24ed5474f277b8'
+EMAIL_HOST_PASSWORD = '39953d196666bd'
+EMAIL_PORT = '2525'
