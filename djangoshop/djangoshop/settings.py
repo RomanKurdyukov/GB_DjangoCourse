@@ -30,7 +30,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -108,6 +108,7 @@ LOGIN_ERROR_URL = '/'
 # 'PASSWORD': Secur1ty#
 
 DATABASES = {
+    # # /beget settings/
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'y91616lw_django',
@@ -117,10 +118,19 @@ DATABASES = {
     #     'PORT': '3306',
     # }
 
+    # # /local settings/
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': 'djangoshop_DB',
+    # }
+
+    # /reg.ru settings/
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'djangoshop_DB',
+        'NAME': 'DjangoCourse_DB',
+        'ENGINE': 'django.db.backends.postgresql',
+        'USER': 'postgres',
     }
+
 }
 
 
