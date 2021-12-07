@@ -77,12 +77,17 @@
             <input type="hidden" name="next" value="{{ next }}">
         {% endif %}
         {{ login_form.as_p }}
-      <button class="w-100 btn btn-lg btn-primary" type="submit" style="margin-bottom: 15px; margin-top: 15px">
-          Войти
-      </button>
-      <a href="{% url 'auth:register' %}" class="w-100 btn btn-lg btn-primary">
-          Зарегестрироваться
-      </a>
+        <button class="w-100 btn btn-lg btn-primary" type="submit" style="margin-bottom: 15px; margin-top: 15px">
+            Войти
+        </button>
+        <a href="{% url 'auth:register' %}" class="w-100 btn btn-lg btn-primary">
+            Зарегестрироваться
+        </a>
+        <button class="btn btn-round form-control">
+            <a href="{% url 'social:begin' 'google-oauth2' %}?next=/">
+                Вход через GOOGLE
+            </a>
+        </button>
     </div>
   </form>
 </main>

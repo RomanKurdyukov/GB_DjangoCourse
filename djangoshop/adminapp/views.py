@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect, HttpResponse, HttpRequest
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, reverse
 from django.urls import reverse_lazy
 
@@ -7,7 +7,7 @@ from authapp.forms import ShopUserRegisterForm, ProductCategoryAddForm, ProductA
 from authapp.models import ShopUser
 from mainapp.models import ProductCategory, Product, VendorCode
 from django.contrib.auth.decorators import user_passes_test
-from django.views.generic import ListView, DeleteView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DeleteView, CreateView, UpdateView
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -210,6 +210,7 @@ class ProductDisableView(DeleteView):
         self.object.save()
 
         return HttpResponseRedirect(self.get_success_url())
+
 
 class VendorCodeCreateView(CreateView):
     model = VendorCode
