@@ -126,7 +126,7 @@ DATABASES = {
 
     # /reg.ru settings/
     'default': {
-        'NAME': 'DjangoCourse_DB',
+        'NAME': 'djangocourse',
         'ENGINE': 'django.db.backends.postgresql',
         'USER': 'postgres',
     }
