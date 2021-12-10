@@ -1,12 +1,27 @@
 from locust import HttpUser, task, TaskSet
+import re
 
 
 def login(data):
-    data.client.post("/auth/login", {"username":"admin", "password":"admin"})
+    result = data.client.get("/auth/login/")
+    token = re.search(r'[a-zA-Z0-9]{64}', result.text)
+    data.client.post(
+        "/auth/login/",
+        {"username": "admin",
+         "password": "admin",
+         "csrf_token": token},
+    )
 
 
 def logout(data):
-    data.client.post("/auth/logout", {"username":"admin", "password":"admin"})
+    result = data.client.get("/auth/logout/")
+    token = re.search(r'[a-zA-Z0-9]{64}', result.text)
+    data.client.post(
+        "/auth/logout/",
+        {"username": "admin",
+         "password": "admin",
+         "csrf_token": token,
+         })
 
 
 def index(data):
