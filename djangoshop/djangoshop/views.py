@@ -5,7 +5,7 @@ from mainapp.models import *
 
 def index(request):
     title = 'Магазин'
-    products = Product.objects.all()[:4]
+    products = Product.objects.select_related('image').all()[:4]
 
     context = {
         'title': title,

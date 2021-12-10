@@ -22,7 +22,7 @@ def products(request, pk=None):
 
     if pk is not None:
         if pk == 0:
-            products = Product.objects.filter(
+            products = Product.objects.select_related('image').filter(
                 is_active=True,
                 category__is_active=True,
                 quantity__gte=1
