@@ -1,5 +1,7 @@
 from django.db import models
-from django.utils.safestring import mark_safe
+from django.dispatch import receiver
+from django.db.models.signals import pre_save, pre_delete, post_save
+from django.core.cache import cache
 
 
 class ProductCategory(models.Model):
@@ -140,8 +142,12 @@ class Product(models.Model):
 
     is_active = models.BooleanField(verbose_name='активна', default=True)
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f'{self.name} {self.vendor_code} ({self.category.name})'
+
 
     class Meta:
         verbose_name = 'Товара'
@@ -149,3 +155,9 @@ class Product(models.Model):
         ordering = ['vendor_code', '-created_at']
 
 
+# def model_post_save(sender, instance, *args, **kwargs):
+#     cache.clear()
+#     print('cache_is_cleared')
+#
+#
+# post_save.connect(model_post_save, sender=Product)

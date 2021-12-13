@@ -13,13 +13,13 @@ import os
 from pathlib import Path
 
 import environ
+
 env = environ.Env()
 environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -28,10 +28,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = env.bool('DEBUG')
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -50,6 +49,8 @@ INSTALLED_APPS = [
     'ordersapp',
 
     'social_django',
+    'template_profiler_panel',
+    'django_extensions',
 
 ]
 AUTH_USER_MODEL = 'authapp.ShopUser'
@@ -98,7 +99,6 @@ WSGI_APPLICATION = 'djangoshop.wsgi.application'
 
 LOGIN_ERROR_URL = '/'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -118,22 +118,20 @@ DATABASES = {
     #     'PORT': '3306',
     # }
 
-    # # /local settings/
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': 'djangoshop_DB',
-    # }
-
-    # /reg.ru settings/
+    # /local settings/
     'default': {
-        'NAME': 'djangocourse',
-        'ENGINE': 'django.db.backends.postgresql',
-        'USER': 'postgres',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'djangoshop_DB',
     }
 
+    # /reg.ru settings/
+    # 'default': {
+    #     'NAME': 'djangocourse',
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'USER': 'postgres',
+    # }
+
 }
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -153,7 +151,6 @@ AUTH_PASSWORD_VALIDATORS = [
     # },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -167,13 +164,12 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "djangoshop", "static"),
@@ -194,7 +190,6 @@ EMAIL_HOST = 'smtp.mailtrap.io'
 EMAIL_HOST_USER = '24ed5474f277b8'
 EMAIL_HOST_PASSWORD = '39953d196666bd'
 EMAIL_PORT = '2525'
-
 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('GOOGLE_KEY')
@@ -219,3 +214,52 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
+
+if DEBUG:
+    def show_toolbar(request):
+        return True
+
+
+    MIDDLEWARE += [
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    ]
+    INSTALLED_APPS += [
+        'debug_toolbar',
+    ]
+
+    DEBUG_TOOLBAR_CONFIG = {
+        'SHOW_TOOLBAR_CALLBACK': show_toolbar,
+    }
+
+    DEBUG_TOOLBAR_PANELS = [
+        'debug_toolbar.panels.versions.VersionsPanel',
+        'debug_toolbar.panels.timer.TimerPanel',
+        'debug_toolbar.panels.settings.SettingsPanel',
+        'debug_toolbar.panels.headers.HeadersPanel',
+        'debug_toolbar.panels.request.RequestPanel',
+        'debug_toolbar.panels.sql.SQLPanel',
+        'debug_toolbar.panels.templates.TemplatesPanel',
+        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+        'debug_toolbar.panels.cache.CachePanel',
+        'debug_toolbar.panels.signals.SignalsPanel',
+        'debug_toolbar.panels.logging.LoggingPanel',
+        'debug_toolbar.panels.redirects.RedirectsPanel',
+        'debug_toolbar.panels.profiling.ProfilingPanel',
+        'template_profiler_panel.panels.template.TemplateProfilerPanel',
+    ]
+
+if os.name == 'posix':
+    CACHE_MIDDLEWARE_ALIAS = 'default'
+
+    CACHE_MIDDLEWARE_SECONDS = 120
+
+    CACHE_MIDDLEWARE_KEY_PREFIX = 'djangoshop'
+
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+            'LOCATION': '127.0.0.1:11211',
+        }
+    }
+
+LOW_CACHE = True
