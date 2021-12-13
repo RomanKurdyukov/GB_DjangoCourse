@@ -13,13 +13,13 @@ import os
 from pathlib import Path
 
 import environ
+
 env = environ.Env()
 environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -31,7 +31,6 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env.bool('DEBUG')
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -100,7 +99,6 @@ WSGI_APPLICATION = 'djangoshop.wsgi.application'
 
 LOGIN_ERROR_URL = '/'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -135,8 +133,6 @@ DATABASES = {
 
 }
 
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -155,7 +151,6 @@ AUTH_PASSWORD_VALIDATORS = [
     # },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -168,7 +163,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -196,7 +190,6 @@ EMAIL_HOST = 'smtp.mailtrap.io'
 EMAIL_HOST_USER = '24ed5474f277b8'
 EMAIL_HOST_PASSWORD = '39953d196666bd'
 EMAIL_PORT = '2525'
-
 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('GOOGLE_KEY')
@@ -226,6 +219,7 @@ if DEBUG:
     def show_toolbar(request):
         return True
 
+
     MIDDLEWARE += [
         'debug_toolbar.middleware.DebugToolbarMiddleware',
     ]
@@ -253,3 +247,19 @@ if DEBUG:
         'debug_toolbar.panels.profiling.ProfilingPanel',
         'template_profiler_panel.panels.template.TemplateProfilerPanel',
     ]
+
+if os.name == 'posix':
+    CACHE_MIDDLEWARE_ALIAS = 'default'
+
+    CACHE_MIDDLEWARE_SECONDS = 120
+
+    CACHE_MIDDLEWARE_KEY_PREFIX = 'djangoshop'
+
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+            'LOCATION': '127.0.0.1:11211',
+        }
+    }
+
+LOW_CACHE = True
